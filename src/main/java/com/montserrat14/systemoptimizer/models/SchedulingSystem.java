@@ -1,15 +1,22 @@
 package com.montserrat14.systemoptimizer.models;
 
+import com.montserrat14.systemoptimizer.models.order.Order;
+import com.montserrat14.systemoptimizer.models.resource.Resource;
+
 import java.util.List;
 
 public class SchedulingSystem {
 
     private Order order;
-    private List<Resource> listResources;
+    private Resource resource;
 
-    public SchedulingSystem(Order order, List<Resource> listResources) {
+    public SchedulingSystem() {
+
+    }
+
+    public SchedulingSystem(Order order, Resource resource) {
         this.order = order;
-        this.listResources = listResources;
+        this.resource = resource;
     }
 
     public Order getOrder() {
@@ -20,11 +27,11 @@ public class SchedulingSystem {
         this.order = order;
     }
 
-    public List<Resource> getListResources() {
-        return listResources;
+    public Resource getResource() {
+        return resource;
     }
 
-    public void setListResources(List<Resource> listResources) {
-        this.listResources = listResources;
+    public void setResource(Resource resource) {
+        this.resource = resource;
     }
 }
