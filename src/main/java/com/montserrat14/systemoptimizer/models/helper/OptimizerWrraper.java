@@ -9,7 +9,7 @@ import com.montserrat14.systemoptimizer.models.resource.Resource;
 import com.montserrat14.systemoptimizer.utils.Constants;
 import org.json.JSONObject;
 
-public class OptimizerWrraper {
+public final class OptimizerWrraper {
 
     private static final ObjectMapper objectMapper =  new ObjectMapper();
 
