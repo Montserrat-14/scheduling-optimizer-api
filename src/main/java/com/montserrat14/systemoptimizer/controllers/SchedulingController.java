@@ -28,16 +28,20 @@ public class SchedulingController {
             return new ResponseEntity<>("Empty Body", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        Resource resource =  OptimizerWrraper.getResourceFrom(Constants.PAYLOAD);
-        Order order = OptimizerWrraper.getOrderFrom(Constants.PAYLOAD);
+        try {
+            Resource resource =  OptimizerWrraper.getResourceFrom(payload);
+            Order order = OptimizerWrraper.getOrderFrom(payload);
 
-        System.out.println(order.getName());
-        System.out.println(resource.getType());
+            System.out.println(order.getName());
+            System.out.println(resource.getType());
 
-        SchedulingSystem schedulingSystem = OptimizerWrraper.getSchedulingSystemFrom(Constants.PAYLOAD);
+            SchedulingSystem schedulingSystem = OptimizerWrraper.getSchedulingSystemFrom(payload);
 
-        System.out.println(schedulingSystem.getOrder().getName());
-        System.out.println(schedulingSystem.getResource().getType());
+            System.out.println(schedulingSystem.getOrder().getName());
+            System.out.println(schedulingSystem.getResource().getType());
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
 
