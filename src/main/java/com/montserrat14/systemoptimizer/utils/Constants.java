@@ -3,7 +3,7 @@ package com.montserrat14.systemoptimizer.utils;
 
 public final class Constants {
 
-    public final static String payload= "{\n" +
+    public final static String PAYLOAD= "{\n" +
             "  \"order\": {\n" +
             "    \"name\": \"Order Name\",\n" +
             "    \"description\": \"Order Description\",\n" +
@@ -39,5 +39,8 @@ public final class Constants {
             "    ]\n" +
             "  }\n" +
             "}";
+
+    public final static String PAYLOAD_ORDER = "order";
+    public final static String PAYLOAD_RESOURCE = "resource";
 
 }
