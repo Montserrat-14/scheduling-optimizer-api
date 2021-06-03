@@ -17,9 +17,11 @@ ENV OWL_QUERY="Algorithm(?alg) ^ dealsWithHeavyProcessingEvaluationFunctions(?al
 ENV MAX_TRIES=3
 ENV RESULTSPATH="resources"
 ENV RESULTSEXTENSION=".csv"
-ENV INTEGER_DEFAULT_PARAM="100"
-ENV DOUBLE_DEFAULT_PARAM="100.00"
-ENV FLOAT_DEFAULT_PARAM="100.00"
+ENV INTEGER_DEFAULT_PARAM="30"
+ENV DOUBLE_DEFAULT_PARAM="30.00"
+ENV FLOAT_DEFAULT_PARAM="30.00"
+ENV MUTATION_RATE="0.8"
+ENV CROSSOVER_RATE="1.0"
 COPY --from=build /home/app/ADS.owl ADS.owl
 COPY --from=build /home/app/target/systemoptimizer-0.0.1-SNAPSHOT.jar /usr/local/lib/demo.jar
 RUN mkdir -p $RESULTSPATH

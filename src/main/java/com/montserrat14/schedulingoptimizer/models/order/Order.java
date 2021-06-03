@@ -8,13 +8,13 @@ public class Order {
     public String description;
     public List<Job> jobs;
     public Objectives objectives;
-    public String duration;
+    public int duration;
 
     public Order() {
 
     }
 
-    public Order(String name, String description, List<Job> jobs, Objectives objectives, String duration) {
+    public Order(String name, String description, List<Job> jobs, Objectives objectives, int duration) {
         this.name = name;
         this.description = description;
         this.jobs = jobs;
@@ -54,11 +54,11 @@ public class Order {
         this.objectives = objectives;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 

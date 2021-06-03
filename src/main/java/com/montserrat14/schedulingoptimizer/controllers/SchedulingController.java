@@ -1,9 +1,9 @@
 package com.montserrat14.schedulingoptimizer.controllers;
 
-import com.montserrat14.schedulingoptimizer.exception.SystemOptimizerException;
+import com.montserrat14.schedulingoptimizer.exception.SchedulingOptimizerException;
 import com.montserrat14.schedulingoptimizer.models.SchedulingSystem;
 import com.montserrat14.schedulingoptimizer.models.order.Order;
-import com.montserrat14.schedulingoptimizer.models.helper.OptimizerWrraper;
+import com.montserrat14.schedulingoptimizer.models.helper.OptimizerWrapper;
 import com.montserrat14.schedulingoptimizer.models.resource.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,20 +21,20 @@ public class SchedulingController {
             value = "/sheduling",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> makeNewSheduling(@RequestBody String payload) throws SystemOptimizerException {
+    public ResponseEntity<Object> makeNewSheduling(@RequestBody String payload) throws SchedulingOptimizerException {
 
         if (payload.isEmpty()) {
             return new ResponseEntity<>("Empty Body", HttpStatus.NOT_ACCEPTABLE);
         }
 
         try {
-            Resource resource =  OptimizerWrraper.getResourceFrom(payload);
-            Order order = OptimizerWrraper.getOrderFrom(payload);
+            Resource resource =  OptimizerWrapper.getResourceFrom(payload);
+            Order order = OptimizerWrapper.getOrderFrom(payload);
 
             System.out.println(order.getName());
             System.out.println(resource.getType());
 
-            SchedulingSystem schedulingSystem = OptimizerWrraper.getSchedulingSystemFrom(payload);
+            SchedulingSystem schedulingSystem = OptimizerWrapper.getSchedulingSystemFrom(payload);
 
             System.out.println(schedulingSystem.getOrder().getName());
             System.out.println(schedulingSystem.getResource().getType());

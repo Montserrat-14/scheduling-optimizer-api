@@ -32,4 +32,6 @@ public class SchedulingSystem {
     public void setResource(Resource resource) {
         this.resource = resource;
     }
+
+
 }
