@@ -1,4 +1,4 @@
-package com.montserrat14.systemoptimizer.models.order;
+package com.montserrat14.schedulingoptimizer.models.order;
 
 import java.util.List;
 
@@ -60,5 +60,11 @@ public class Order {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public Integer getTotalNumberOfOperations() {
+       return this.jobs.stream()
+                .map(job -> job.getNumberOfOperations())
+                .reduce(0, Integer::sum);
     }
 }

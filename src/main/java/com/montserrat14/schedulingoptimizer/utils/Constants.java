@@ -1,4 +1,4 @@
-package com.montserrat14.systemoptimizer.utils;
+package com.montserrat14.schedulingoptimizer.utils;
 
 
 public final class Constants {

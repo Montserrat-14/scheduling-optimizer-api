@@ -1,4 +1,4 @@
-package com.montserrat14.systemoptimizer.models.resource;
+package com.montserrat14.schedulingoptimizer.models.resource;
 
 public class Resources {
 

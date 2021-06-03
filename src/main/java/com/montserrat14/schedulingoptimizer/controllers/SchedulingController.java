@@ -1,11 +1,10 @@
-package com.montserrat14.systemoptimizer.controllers;
+package com.montserrat14.schedulingoptimizer.controllers;
 
-import com.montserrat14.systemoptimizer.exception.SystemOptimizerException;
-import com.montserrat14.systemoptimizer.models.SchedulingSystem;
-import com.montserrat14.systemoptimizer.models.helper.OptimizerWrraper;
-import com.montserrat14.systemoptimizer.models.order.Order;
-import com.montserrat14.systemoptimizer.models.resource.Resource;
-import com.montserrat14.systemoptimizer.utils.Constants;
+import com.montserrat14.schedulingoptimizer.exception.SystemOptimizerException;
+import com.montserrat14.schedulingoptimizer.models.SchedulingSystem;
+import com.montserrat14.schedulingoptimizer.models.order.Order;
+import com.montserrat14.schedulingoptimizer.models.helper.OptimizerWrraper;
+import com.montserrat14.schedulingoptimizer.models.resource.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

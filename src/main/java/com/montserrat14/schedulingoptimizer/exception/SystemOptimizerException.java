@@ -1,4 +1,4 @@
-package com.montserrat14.systemoptimizer.exception;
+package com.montserrat14.schedulingoptimizer.exception;
 
 public class SystemOptimizerException  extends Exception{
 

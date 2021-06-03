@@ -1,12 +1,12 @@
-package com.montserrat14.systemoptimizer.models.helper;
+package com.montserrat14.schedulingoptimizer.models.helper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.montserrat14.systemoptimizer.exception.SystemOptimizerException;
-import com.montserrat14.systemoptimizer.models.SchedulingSystem;
-import com.montserrat14.systemoptimizer.models.order.Order;
-import com.montserrat14.systemoptimizer.models.resource.Resource;
-import com.montserrat14.systemoptimizer.utils.Constants;
+import com.montserrat14.schedulingoptimizer.exception.SystemOptimizerException;
+import com.montserrat14.schedulingoptimizer.models.SchedulingSystem;
+import com.montserrat14.schedulingoptimizer.models.order.Order;
+import com.montserrat14.schedulingoptimizer.utils.Constants;
+import com.montserrat14.schedulingoptimizer.models.resource.Resource;
 import org.json.JSONObject;
 
 public final class OptimizerWrraper {
