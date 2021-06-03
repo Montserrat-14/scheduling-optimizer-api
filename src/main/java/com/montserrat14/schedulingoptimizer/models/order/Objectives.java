@@ -1,4 +1,4 @@
-package com.montserrat14.systemoptimizer.models.order;
+package com.montserrat14.schedulingoptimizer.models.order;
 
 public class Objectives {
     private boolean totalTime;

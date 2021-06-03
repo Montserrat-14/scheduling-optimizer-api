@@ -1,14 +1,12 @@
-package com.montserrat14.systemoptimizer;
+package com.montserrat14.schedulingoptimizer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SystemOptimizerApplication {
+public class SchedulingOptimizerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SystemOptimizerApplication.class, args);
+		SpringApplication.run(SchedulingOptimizerApplication.class, args);
 	}
-
-
 }

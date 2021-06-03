@@ -1,4 +1,4 @@
-package com.montserrat14.systemoptimizer.models.order;
+package com.montserrat14.schedulingoptimizer.models.order;
 
 import java.util.List;
 
@@ -40,4 +40,6 @@ public class Job {
     public void setOperations(List<Operation> operations) {
         this.operations = operations;
     }
+
+    public Integer getNumberOfOperations() { return this.operations != null ? this.operations.size() : 0; }
 }

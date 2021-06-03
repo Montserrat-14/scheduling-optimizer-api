@@ -1,9 +1,7 @@
-package com.montserrat14.systemoptimizer.models;
+package com.montserrat14.schedulingoptimizer.models;
 
-import com.montserrat14.systemoptimizer.models.order.Order;
-import com.montserrat14.systemoptimizer.models.resource.Resource;
-
-import java.util.List;
+import com.montserrat14.schedulingoptimizer.models.order.Order;
+import com.montserrat14.schedulingoptimizer.models.resource.Resource;
 
 public class SchedulingSystem {
 
