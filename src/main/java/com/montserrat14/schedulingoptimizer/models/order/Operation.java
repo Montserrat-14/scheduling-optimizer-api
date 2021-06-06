@@ -2,40 +2,40 @@ package com.montserrat14.schedulingoptimizer.models.order;
 
 public class Operation {
 
-    private String resourceId;
-    private String estimatedTime;
-    private String index;
+    private int resourceId;
+    private int estimatedTime;
+    private int index;
 
     public Operation() {
     }
 
-    public Operation(String resourceId, String estimatedTime, String index) {
+    public Operation(int resourceId, int estimatedTime, int index) {
         this.resourceId = resourceId;
         this.estimatedTime = estimatedTime;
         this.index = index;
     }
 
-    public String getResourceId() {
+    public int getResourceId() {
         return resourceId;
     }
 
-    public void setResourceId(String resourceId) {
+    public void setResourceId(int resourceId) {
         this.resourceId = resourceId;
     }
 
-    public String getEstimatedTime() {
+    public int getEstimatedTime() {
         return estimatedTime;
     }
 
-    public void setEstimatedTime(String estimatedTime) {
+    public void setEstimatedTime(int estimatedTime) {
         this.estimatedTime = estimatedTime;
     }
 
-    public String getIndex() {
+    public int getIndex() {
         return index;
     }
 
-    public void setIndex(String index) {
+    public void setIndex(int index) {
         this.index = index;
     }
 }
