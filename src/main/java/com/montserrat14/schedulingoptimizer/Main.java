@@ -22,18 +22,15 @@ public class Main {
         integerPermutationSolution.setVariable(0,3);
         integerPermutationSolution.setVariable(1,6);
         integerPermutationSolution.setVariable(2,4);
-        integerPermutationSolution.setVariable(3,0);
+        integerPermutationSolution.setVariable(3,1);
         integerPermutationSolution.setVariable(4,7);
-        integerPermutationSolution.setVariable(5,1);
+        integerPermutationSolution.setVariable(5,0);
         integerPermutationSolution.setVariable(6,5);
         integerPermutationSolution.setVariable(7,2);
 
         simulator.run(integerPermutationSolution);
 
-        for (SimulatorJob job : simulator.getSimulatorJobList()){
-
-            System.out.println(job.getEndTime());
-        }
+        System.out.println("Makespan: " + simulator.getObjective());
 
     }
 }

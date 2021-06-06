@@ -21,6 +21,8 @@ public class Simulator {
     private SchedulingSystem problemInfo;
     private EventQueue eventQueue;
 
+    private int objective;
+
     public Simulator(SchedulingSystem problemInfo) {
         this.problemInfo = problemInfo;
         init();
@@ -68,6 +70,13 @@ public class Simulator {
             simulatorEventHandler.catchEvent(ev);
         }
 
+        this.objective = getMakespan();
+
+    }
+
+    private int getMakespan(){
+        return simulatorJobList.stream()
+                .max(Comparator.comparing(SimulatorJob::getEndTime)).get().getEndTime();
     }
 
     private boolean hasEnded(){
@@ -138,5 +147,13 @@ public class Simulator {
 
     public Map<Integer, Task> getAllTasks() {
         return allTasks;
+    }
+
+    public int getObjective() {
+        return objective;
+    }
+
+    public void setObjective(int objective) {
+        this.objective = objective;
     }
 }
