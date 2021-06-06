@@ -5,6 +5,7 @@ import com.montserrat14.schedulingoptimizer.models.SchedulingSystem;
 import com.montserrat14.schedulingoptimizer.models.order.Order;
 import com.montserrat14.schedulingoptimizer.models.helper.OptimizerWrraper;
 import com.montserrat14.schedulingoptimizer.models.resource.Resource;
+import com.montserrat14.schedulingoptimizer.simulator.Simulator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.uma.jmetal.solution.integersolution.IntegerSolution;
+import org.uma.jmetal.solution.integersolution.impl.DefaultIntegerSolution;
+import org.uma.jmetal.solution.permutationsolution.impl.IntegerPermutationSolution;
 
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000", "http://localhost:80"})
 @RestController

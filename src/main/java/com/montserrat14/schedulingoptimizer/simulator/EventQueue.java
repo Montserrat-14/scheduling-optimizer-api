@@ -15,7 +15,13 @@ public class EventQueue {
 
             double dif = ev1.getTime() - ev2.getTime();
 
-            return dif > 0 ? 1 : (dif < 0) ? -1 : 0;
+            int timeOrder =  dif > 0 ? 1 : (dif < 0) ? -1 : 0;
+
+            if(timeOrder != 0){
+                return timeOrder;
+            }
+
+            return ev1.getTask().getAlgorithmPriority() > ev2.getTask().getAlgorithmPriority()  ? 1 : -1;
         }
     }
 

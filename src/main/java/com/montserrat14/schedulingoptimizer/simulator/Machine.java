@@ -1,6 +1,5 @@
 package com.montserrat14.schedulingoptimizer.simulator;
 
-import com.montserrat14.schedulingoptimizer.models.order.Job;
 
 public class Machine {
 

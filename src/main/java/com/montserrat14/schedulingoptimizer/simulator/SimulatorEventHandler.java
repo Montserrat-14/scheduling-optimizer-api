@@ -8,7 +8,7 @@ public class SimulatorEventHandler {
         this.simulator = simulator;
     }
 
-    public void startEvent(Event event){
+    private void startEvent(Event event){
 
         SimulatorJob simulatorJob =  event.getSimulatorJob();
         Task task = event.getTask();
@@ -17,25 +17,26 @@ public class SimulatorEventHandler {
             //TODO: "Precendence missmatch" - Tratar das constraints
         }
 
-        //
-
-        Station station = simulator.getStationList().get(task.getStationID());
+        Station station = this.simulator.getStationList().get(task.getStationID());
 
         if(station.addJob(simulatorJob)){
-
+            this.simulator.launchEndEvent(event.getTime(),simulatorJob,task);
         }
 
     }
 
-    public void endEvent(Event event){
+    private void endEvent(Event event){
 
         SimulatorJob simulatorJob =  event.getSimulatorJob();
         Task task = event.getTask();
 
-        Station station = simulator.getStationList().get(task.getStationID());
+        Station station = this.simulator.getStationList().get(task.getStationID());
         SimulatorJob nextJob = station.removeJob(simulatorJob);
 
-        //TODO: Handle next Job
+        if(nextJob != null){
+            Task nextJobTask = nextJob.getCurrentTask();
+            this.simulator.launchEndEvent(event.getTime(),nextJob,nextJobTask);
+        }
 
         int currentTask =  simulatorJob.getCurrentTaskIndex() + 1;
         simulatorJob.setCurrentTaskIndex(currentTask);
@@ -44,7 +45,21 @@ public class SimulatorEventHandler {
             //Job Ended
             simulatorJob.setEndTime(event.getTime());
         }else{
-            //TODO: simulator.launchStartEvent();
+            this.simulator.launchStartEvent(event.getTime(),simulatorJob,simulatorJob.getCurrentTask());
         }
     }
+
+    public void catchEvent(Event event){
+
+        switch (event.getType()){
+
+            case START:
+                startEvent(event);
+                break;
+            case END:
+                endEvent(event);
+                break;
+        }
+    }
+
 }

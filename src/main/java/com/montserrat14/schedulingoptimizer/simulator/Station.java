@@ -3,6 +3,8 @@ package com.montserrat14.schedulingoptimizer.simulator;
 import com.montserrat14.schedulingoptimizer.exception.SimulatorException;
 import com.montserrat14.schedulingoptimizer.models.order.Job;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Station {
@@ -10,13 +12,17 @@ public class Station {
     private int id;
     private List<Machine> machineList;
     private SimulatorJobQueue simulatorJobQueue;
+    private List<Integer> tasksToRunList;
 
-    public Station(int id, int totalMachine, int totalJobs) {
-        this.id = id;
-        init(totalMachine, totalJobs);
+    public Station(int id, int totalMachine, int totalJobs, List<Integer> tasksToRunList) {
+        init(id, totalMachine, totalJobs, tasksToRunList);
     }
 
-    private void init(int totalMachine, int totalJobs){
+    private void init(int id, int totalMachine, int totalJobs, List<Integer> tasksToRunList ){
+        this.id = id;
+        this.machineList = new ArrayList<>();
+        this.tasksToRunList = tasksToRunList;
+
         for (int i = 0; i < totalMachine ; i++) {
             this.machineList.add(new Machine(this));
         }
@@ -38,9 +44,9 @@ public class Station {
 
         for (int i = 0; i < machineList.size(); i++) {
             if(machineList.get(i).isAvailable()){
-                machineList.get(i).addJob(simulatorJob);
-                simulatorJob.setCurrentMachineIndex(i);
+                addJobToMachine(simulatorJob,i);
                 machineAvailable = true;
+                break;
             }
         }
 
@@ -51,6 +57,21 @@ public class Station {
         return machineAvailable;
     }
 
+    private boolean addJobToMachine(SimulatorJob simulatorJob, int machineIndex){
+        
+        if(Collections.min(this.tasksToRunList) != simulatorJob.getCurrentTask().getAlgorithmPriority()){
+            return false;
+        }
+
+        machineList.get(machineIndex).addJob(simulatorJob);
+        simulatorJob.setCurrentMachineIndex(machineIndex);
+
+        this.tasksToRunList.remove((Integer) simulatorJob.getCurrentTask().getAlgorithmPriority());
+
+        return  true;
+
+    }
+
     public SimulatorJob removeJob(SimulatorJob simulatorJob){
 
        Machine machine = machineList.get(simulatorJob.getCurrentMachineIndex());
@@ -58,14 +79,17 @@ public class Station {
 
        SimulatorJob nextJob = this.simulatorJobQueue.getNextSimulatorJob();
 
-       if(nextJob == null){
-           return null;
+        if(nextJob == null){
+            return null;
+        }
+
+       if (addJobToMachine(nextJob,simulatorJob.getCurrentMachineIndex())){
+           return nextJob;
        }
 
-       machine.addJob(nextJob);
-       nextJob.setCurrentMachineIndex(simulatorJob.getCurrentMachineIndex());
+       this.simulatorJobQueue.addJob(nextJob);
 
-       return nextJob;
+       return null;
 
     }
 }

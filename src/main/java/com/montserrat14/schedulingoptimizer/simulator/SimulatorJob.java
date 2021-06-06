@@ -12,13 +12,14 @@ public class SimulatorJob {
     private int endTime;
     private int currentTaskIndex;
     private int currentMachineIndex;
+    private String name;
 
-    public SimulatorJob(int operationID, List<Operation> operationList) {
-        init(operationList, operationID);
+    public SimulatorJob(int operationID, List<Operation> operationList, String jobName) {
+        init(operationList, operationID, jobName);
     }
 
-    private void init(List<Operation> operationList, int operationID){
-
+    private void init(List<Operation> operationList, int operationID, String jobName){
+        this.name = jobName;
         this.taskList = new ArrayList<>();
         this.currentTaskIndex = 0;
 
@@ -85,5 +86,13 @@ public class SimulatorJob {
 
     public void setEndTime(int endTime) {
         this.endTime = endTime;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
