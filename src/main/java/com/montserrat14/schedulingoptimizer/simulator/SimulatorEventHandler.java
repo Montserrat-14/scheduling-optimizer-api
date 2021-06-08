@@ -33,15 +33,16 @@ public class SimulatorEventHandler {
         Station station = this.simulator.getStationList().get(task.getStationID());
         SimulatorJob nextJob = station.removeJob(simulatorJob);
 
+        //the station has job in waiting queue
         if(nextJob != null){
             Task nextJobTask = nextJob.getCurrentTask();
             this.simulator.launchEndEvent(event.getTime(),nextJob,nextJobTask);
         }
 
-        int currentTask =  simulatorJob.getCurrentTaskIndex() + 1;
-        simulatorJob.setCurrentTaskIndex(currentTask);
+        int currentTaskIndex =  simulatorJob.getCurrentTaskIndex() + 1;
+        simulatorJob.setCurrentTaskIndex(currentTaskIndex);
 
-        if(currentTask == simulatorJob.getNumberOfTasks()){
+        if(currentTaskIndex == simulatorJob.getNumberOfTasks()){
             //Job Ended
             simulatorJob.setEndTime(event.getTime());
         }else{
