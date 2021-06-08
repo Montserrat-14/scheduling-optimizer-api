@@ -28,14 +28,16 @@ public class Simulator {
         init();
     }
 
-    public void run(IntegerPermutationSolution solution){
+    public void run(PermutationSolution<Integer> solution){
         // IntegerSolution ex: [3,0,6,4,1,2,5]
         this.sortedSolutionList = new ArrayList<>();
-
+        System.out.println("\n\n\n############################################################################## NEW SOLUTION");
         for (int i = 0; i < solution.getNumberOfVariables(); i++) {
+            System.out.print("Index: " + i + " Task: " + solution.getVariable(i));
             this.sortedSolutionList.add(solution.getVariable(i));
             this.allTasks.get(this.sortedSolutionList.get(i)).setAlgorithmPriority(i);
         }
+        System.out.println("");
 
         // add tasks by Machine
         for (Task task : this.allTasks.values()) {
@@ -60,6 +62,10 @@ public class Simulator {
 
         while (!hasEnded()){
             Event ev = this.eventQueue.getNextEvent();
+            if(ev == null){
+                this.objective = 10000;
+                break;
+            }
             System.out.println("Event time: " + ev.getTime() + "\n" +
                                "Event Type: " + ev.getType() + "\n" +
                                "Job name: " + ev.getSimulatorJob().getName() + "\n" +
@@ -70,7 +76,8 @@ public class Simulator {
             simulatorEventHandler.catchEvent(ev);
         }
 
-        this.objective = getMakespan();
+        if(this.objective != 10000) this.objective = getMakespan();
+        System.out.println("Makespan: " + this.objective);
 
     }
 
@@ -95,10 +102,6 @@ public class Simulator {
         eventQueue.addEvent(new Event(simulatorJob, task, EventType.END, time));
 
     }
-
-    /**
-     * SET's and GET's
-     */
 
     private void init(){
 
@@ -128,6 +131,10 @@ public class Simulator {
         this.eventQueue = new EventQueue(this.allTasks.size()*2);
 
     }
+
+    /**
+     * SET's and GET's
+     */
 
     public List<Station> getStationList() {
         return stationList;

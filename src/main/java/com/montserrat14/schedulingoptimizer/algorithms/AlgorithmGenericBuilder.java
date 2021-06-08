@@ -145,9 +145,9 @@ public class AlgorithmGenericBuilder {
     }
 
     public AlgorithmGenericBuilder getResults() throws Exception {
-//        ResultListOutput resultsOutput = new ResultListOutput(this.algorithm, problem);
-//        results = resultsOutput.getResultsPayload();
-//        resultsOutput.print();
+        ResultListOutput resultsOutput = new ResultListOutput(this.algorithm, problem);
+        results = resultsOutput.getResultsPayload();
+        //resultsOutput.print();
         return this;
     }
 

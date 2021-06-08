@@ -22,7 +22,7 @@ public class RunAlgorithmService {
 
         algBuilder.setProblem(newProblem);
 
-        startAlgorithm(ALG_NAME, newProblem.getProblem().getOrder().getDuration());
+        startAlgorithm(ALG_NAME.toLowerCase(), newProblem.getProblem().getOrder().getDuration());
 
         return algBuilder.getResponse();
     }

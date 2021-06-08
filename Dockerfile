@@ -12,8 +12,6 @@ RUN mvn -f /home/app/pom.xml clean package
 # Package stage
 #
 FROM openjdk:11-jre-slim
-ENV OWL_PATH="./ADS.owl"
-ENV OWL_QUERY="Algorithm(?alg) ^ dealsWithHeavyProcessingEvaluationFunctions(?alg,true) ^ minObjectivesAlgorithmIsAbleToDealWith(?alg,?min) ^ swrlb:lessThanOrEqual(?min,%%NOBJECTIVES%%) ^ maxObjectivesAlgorithmIsAbleToDealWith(?alg,?max) ^ swrlb:greaterThanOrEqual(?max, %%NOBJECTIVES%%) -> sqwrl:select(?alg)"
 ENV MAX_TRIES=3
 ENV RESULTSPATH="resources"
 ENV RESULTSEXTENSION=".csv"

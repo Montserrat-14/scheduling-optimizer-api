@@ -44,8 +44,7 @@ public class Station {
 
         for (int i = 0; i < machineList.size(); i++) {
             if(machineList.get(i).isAvailable()){
-                addJobToMachine(simulatorJob,i);
-                machineAvailable = true;
+                machineAvailable = addJobToMachine(simulatorJob,i);
                 break;
             }
         }
