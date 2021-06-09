@@ -5,11 +5,15 @@ import com.montserrat14.schedulingoptimizer.models.problem.factory.ISchedulingPr
 import com.montserrat14.schedulingoptimizer.simulator.Simulator;
 import org.uma.jmetal.problem.permutationproblem.impl.AbstractIntegerPermutationProblem;
 import org.uma.jmetal.solution.permutationsolution.PermutationSolution;
+import org.uma.jmetal.util.solutionattribute.impl.NumberOfViolatedConstraints;
+import org.uma.jmetal.util.solutionattribute.impl.OverallConstraintViolation;
 
 public class JobShopProblem extends AbstractIntegerPermutationProblem implements ISchedulingProblem {
 
     private SchedulingSystem problemRequest;
     private int length;
+    public OverallConstraintViolation<PermutationSolution<Integer>> overallConstraintViolationDegree;
+    public NumberOfViolatedConstraints<PermutationSolution<Integer>> numberOfViolatedConstraints;
 
     @Override
     public void createProblem(SchedulingSystem problemRequest) {
@@ -21,6 +25,8 @@ public class JobShopProblem extends AbstractIntegerPermutationProblem implements
         this.length = problemRequest.getOrder().getTotalNumberOfOperations();
         setNumberOfVariables(this.length);
         setNumberOfObjectives(1); //FIXME: In the end we can add more objectives beyond makespan
+        overallConstraintViolationDegree = new OverallConstraintViolation<>();
+        numberOfViolatedConstraints = new NumberOfViolatedConstraints<>();
 
     }
 
@@ -28,9 +34,15 @@ public class JobShopProblem extends AbstractIntegerPermutationProblem implements
     public void evaluate(PermutationSolution<Integer>solution ) {
         Simulator sim = new Simulator(this.problemRequest);
         sim.run(solution);
-        solution.setObjective(0,sim.getObjective());
 
-        //TODO: Set Constraints
+        solution.setObjective(0,sim.getObjective());
+        evaluateConstraints(solution, sim);
+    }
+
+    private void evaluateConstraints(PermutationSolution<Integer> solution, Simulator simulator) {
+        int violated = simulator.getNumberOfViolatedConstraints();
+        numberOfViolatedConstraints.setAttribute(solution, violated);
+        overallConstraintViolationDegree.setAttribute(solution, (double) violated);
     }
 
     public SchedulingSystem getProblem() {

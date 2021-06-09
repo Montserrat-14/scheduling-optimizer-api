@@ -13,10 +13,6 @@ public class SimulatorEventHandler {
         SimulatorJob simulatorJob =  event.getSimulatorJob();
         Task task = event.getTask();
 
-        if(simulatorJob.getCurrentTaskIndex() != task.getPrecedenceIndex()){
-            //TODO: "Precendence missmatch" - Tratar das constraints
-        }
-
         Station station = this.simulator.getStationList().get(task.getStationID());
 
         if(station.addJob(simulatorJob)){
