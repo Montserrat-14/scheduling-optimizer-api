@@ -10,16 +10,18 @@ import java.util.List;
 public class Station {
 
     private int id;
+    private String name;
     private List<Machine> machineList;
     private SimulatorJobQueue simulatorJobQueue;
     private List<Integer> tasksToRunList;
 
-    public Station(int id, int totalMachine, int totalJobs, List<Integer> tasksToRunList) {
-        init(id, totalMachine, totalJobs, tasksToRunList);
+    public Station(int id, String name, int totalMachine, int totalJobs, List<Integer> tasksToRunList) {
+        init(id, name, totalMachine, totalJobs, tasksToRunList);
     }
 
-    private void init(int id, int totalMachine, int totalJobs, List<Integer> tasksToRunList ){
+    private void init(int id, String name, int totalMachine, int totalJobs, List<Integer> tasksToRunList ){
         this.id = id;
+        this.name = name;
         this.machineList = new ArrayList<>();
         this.tasksToRunList = tasksToRunList;
 
@@ -90,5 +92,17 @@ public class Station {
 
        return null;
 
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public SimulatorJobQueue getSimulatorJobQueue() {
+        return simulatorJobQueue;
+    }
+
+    public List<Integer> getTasksToRunList() {
+        return tasksToRunList;
     }
 }

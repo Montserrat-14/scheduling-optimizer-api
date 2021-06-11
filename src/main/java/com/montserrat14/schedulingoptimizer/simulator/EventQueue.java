@@ -1,9 +1,6 @@
 package com.montserrat14.schedulingoptimizer.simulator;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class EventQueue {
 
@@ -29,12 +26,14 @@ public class EventQueue {
     private EventComparator comparator;
     private PriorityQueue<Event> priorityQueue;
     private List<Event> pastEventsList;
+    private HashMap<String, List<Event>> pastEventsByMachine;
 
     public EventQueue(int totalCapacity) {
         this.totalCapacity = totalCapacity;
         this.comparator = new EventComparator();
         this.priorityQueue = new PriorityQueue<>(this.totalCapacity,this.comparator);
         this.pastEventsList = new ArrayList<>();
+        this.pastEventsByMachine = new LinkedHashMap<>();
     }
 
     public void addEvent(Event newEvent){
@@ -48,7 +47,22 @@ public class EventQueue {
         }
 
         Event event = this.priorityQueue.remove();
-        this.pastEventsList.add(event);
+
+
+        if(event.getType().equals(EventType.END)){
+            this.pastEventsList.add(event);
+
+            //this is for request result
+            if(existMachine(event.getResourceName())){
+                List<Event> existedList = getListEventFromMapPerMachine(event.getResourceName());
+                existedList.add(event);
+                this.pastEventsByMachine.put(event.getResourceName(),existedList);
+            }else{//new Machine add
+                List<Event> newList = getListEventFromMapPerMachine(event.getResourceName());
+                newList.add(event);
+                this.pastEventsByMachine.put(event.getResourceName(),newList);
+            }
+        }
 
         return event;
     }
@@ -63,5 +77,30 @@ public class EventQueue {
 
     public List<Event> getPastEventsList() {
         return pastEventsList;
+    }
+
+    public HashMap<String, List<Event>> getPastEventsByMachine() {
+        return pastEventsByMachine;
+    }
+
+    public void setPastEventsByMachine(HashMap<String, List<Event>> pastEventsByMachine) {
+        this.pastEventsByMachine = pastEventsByMachine;
+    }
+
+    private boolean existMachine(String name){
+
+        return pastEventsByMachine.containsValue(name);
+    }
+
+    private List<Event> getListEventFromMapPerMachine(String name){
+
+        if(this.pastEventsByMachine.isEmpty()){
+            return new ArrayList<>();
+        }
+
+        if(this.pastEventsByMachine.containsValue(name)){
+            return this.pastEventsByMachine.get(name);
+        }
+        return new ArrayList<>();
     }
 }

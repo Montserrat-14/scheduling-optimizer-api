@@ -6,9 +6,11 @@ public class Event {
     private Task task;
     private EventType type;
     private int time;
+    private String resourceName;
 
-    public Event(SimulatorJob simulatorJob, Task task, EventType type, int time) {
+    public Event(SimulatorJob simulatorJob, Task task, EventType type, int time, String resourceName) {
         this.simulatorJob = simulatorJob;
+        this.resourceName = resourceName;
         this.task = task;
         this.type = type;
         this.time = time;
@@ -44,5 +46,13 @@ public class Event {
 
     public void setTime(int time) {
         this.time = time;
+    }
+
+    public int getStartTime(){
+        return this.time - task.getDuration();
+    }
+
+    public String getResourceName() {
+        return resourceName;
     }
 }

@@ -1,89 +1,91 @@
 package com.montserrat14.schedulingoptimizer.algorithms;
 
-
+import com.montserrat14.schedulingoptimizer.models.SchedulingSystem;
 import com.montserrat14.schedulingoptimizer.models.problem.factory.ISchedulingProblem;
+import com.montserrat14.schedulingoptimizer.result.*;
+import com.montserrat14.schedulingoptimizer.simulator.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.solution.Solution;
+import org.uma.jmetal.solution.permutationsolution.impl.IntegerPermutationSolution;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
-import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ResultListOutput extends SolutionListOutput {
     private ISchedulingProblem problem;
-    private static final String VARFILENAME = "VAR";
-    private static final String FUNFILENAME = "FUN";
     private List<? extends Solution<?>> solutionList;
-    private final HashMap<String, Object> resultsPayload;
+    private Simulator simulator;
 
-    public ResultListOutput(Algorithm<List<? extends Solution<?>>> algorithm, ISchedulingProblem problem) {
+    private List<Machines> resultMachinesPerSolutionList;
+    private List<Stations> resulStationPerSolution;
+    private List<JSONObject> results;
+
+
+    public ResultListOutput(Algorithm<List<? extends Solution<?>>> algorithm, ISchedulingProblem problem, SchedulingSystem problemS) {
         super(algorithm.getResult());
         this.solutionList = algorithm.getResult();
         this.problem = problem;
-        /*this.setVarFileOutputContext(new DefaultFileOutputContext(System.getenv("RESULTSPATH")
-                + File.separator + ResultListOutput.VARFILENAME + this.problem.getProblem().getId() + System.getenv("RESULTSEXTENSION")));
-        this.setFunFileOutputContext(new DefaultFileOutputContext(System.getenv("RESULTSPATH")
-                + File.separator + ResultListOutput.FUNFILENAME + this.problem.getProblem().getId()+ System.getenv("RESULTSEXTENSION")));*/
-        this.resultsPayload = new HashMap<>();
-        //this.resultsPayload.put("id", this.problem.getProblem().getId());
+        this.resultMachinesPerSolutionList = new ArrayList<>();
+        this.resulStationPerSolution = new ArrayList<>();
+        this.results = new ArrayList<>();
+
+        initSimulator(problemS);
+
     }
 
-    public HashMap<String, Object> getResultsPayload() {
-        ArrayList<HashMap<String, ArrayList<HashMap<String, Object>>>> results = new ArrayList<>();
+    private void initSimulator(SchedulingSystem schedulingSystem) {
 
+        for (Solution<?> intPermutationSolution : this.solutionList) {
+            this.simulator = new Simulator(schedulingSystem);
+            this.simulator.run((IntegerPermutationSolution) intPermutationSolution);
 
-        if(solutionList.size() > 0) {
-            for (int i = 0; i < solutionList.size(); i++) {
-                /*HashMap<String, ArrayList<HashMap<String, Object>>> currResult = new HashMap<>();
-                currResult.put("solution", getVariablesList(solutionList, i));
-                currResult.put("objective", getObjectivesList(solutionList, i));
-                results.add(currResult);*/
-                System.out.println("#######################SOLUTION: " + i);
-                System.out.println("#####VAR: " + i);
-                getVariablesList(solutionList, i);
-                System.out.println("#####Objectives: " + i);
-                getObjectivesList(solutionList, i);
+            Objectives resultObjective = new Objectives("markspan", this.simulator.getObjective());
+
+            //results.add(new JSONArray().put(new JSONObject(new Solutions(resultObjective,getResultMachinesPerSolutionList()))));
+            results.add(new JSONObject(new Solutions(resultObjective, getResultMachinesPerSolutionList())));
+        }
+
+        System.out.println();
+    }
+
+    private List<Stations> getResultMachinesPerSolutionList() {
+
+        for (List<Event> events : this.simulator.getEventQueue().getPastEventsByMachine().values()) {
+
+            for (Event pastEvent : events) {
+
+                Machines resultMachine = new Machines();
+                Operations resultOperation = new Operations();
+
+                resultMachine.setName(pastEvent.getResourceName());
+
+                resultOperation.setId(String.valueOf(pastEvent.getSimulatorJob().getCurrentMachineIndex()));
+                resultOperation.setJob(pastEvent.getSimulatorJob().getName());
+                resultOperation.setEndTime(pastEvent.getTime());
+                resultOperation.setStartTime(pastEvent.getStartTime());
+
+                resultMachine.getOperations().add(resultOperation);
+
+                resultMachinesPerSolutionList.add(resultMachine);
+
+                resulStationPerSolution.add(new Stations(resultMachinesPerSolutionList));
             }
         }
 
-        resultsPayload.put("results", results);
-
-        return resultsPayload;
+        return resulStationPerSolution;
     }
 
-    private ArrayList<HashMap<String, Object>> getVariablesList(List<? extends Solution<?>> solutionList, Integer index) {
-        ArrayList<HashMap<String, Object>> variables = new ArrayList<>();
-
-
-        int numberOfVariables = solutionList.get(index).getNumberOfVariables();
-
-        for(int i = 0; i < numberOfVariables; i++) {
-            /*HashMap<String, Object> variableObject = new HashMap<>();
-            variableObject.put("name", this.problem.getProblem().getResource().gegetName());
-            variableObject.put("value", solutionList.get(index).getVariable(i).toString());
-            variables.add(variableObject);*/
-            System.out.println("Var " + i + " -> " + solutionList.get(index).getVariable(i).toString());
-        }
-
-        return variables;
+    public List<JSONObject> getResults() {
+        return results;
     }
 
-    private ArrayList<HashMap<String, Object>> getObjectivesList(List<? extends Solution<?>> solutionList, Integer index) {
-        ArrayList<HashMap<String, Object>> objectives = new ArrayList<>();
-
-
-        int numberOfObjectives = solutionList.get(0).getNumberOfObjectives();
-
-        for(int i = 0; i < numberOfObjectives; i++) {
-            HashMap<String, Object> objectiveObject = new HashMap<>();
-            //objectiveObject.put("value", solutionList.get(index).getObjective(i));
-            //objectives.add(objectiveObject);
-            System.out.println("Quality " + i + " -> " + solutionList.get(index).getObjective(i));
-        }
-
-        return objectives;
+    public void setResults(List<JSONObject> results) {
+        this.results = results;
     }
 }
