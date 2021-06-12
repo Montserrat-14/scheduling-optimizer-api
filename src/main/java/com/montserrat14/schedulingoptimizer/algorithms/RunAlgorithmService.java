@@ -5,22 +5,27 @@ import com.montserrat14.schedulingoptimizer.exception.SchedulingOptimizerExcepti
 import com.montserrat14.schedulingoptimizer.models.SchedulingSystem;
 import com.montserrat14.schedulingoptimizer.models.problem.factory.ISchedulingProblem;
 import com.montserrat14.schedulingoptimizer.models.problem.factory.SchedulingProblemFactory;
+import org.drools.core.reteoo.RightInputAdapterNode;
+import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RunAlgorithmService {
 
+    private static Logger logger =  Logger.getLogger(RunAlgorithmService.class.getName());
     private static final String ALG_NAME = "NSGAII";
 
-    private static AlgorithmGenericBuilder algBuilder = new AlgorithmGenericBuilder();
+    private static final AlgorithmGenericBuilder algBuilder = new AlgorithmGenericBuilder();
 
-    public static HashMap<String, Object> run(SchedulingSystem schedulingSystem) throws AlgorithmsException, SchedulingOptimizerException {
-
+    public static JSONObject run(SchedulingSystem schedulingSystem) throws AlgorithmsException, SchedulingOptimizerException {
 
         SchedulingProblemFactory problemFactory = new SchedulingProblemFactory();
         ISchedulingProblem newProblem = problemFactory.getProblem(schedulingSystem);
 
         algBuilder.setProblem(newProblem);
+        algBuilder.setSchedulingSystem(schedulingSystem);
 
         startAlgorithm(ALG_NAME.toLowerCase(), newProblem.getProblem().getOrder().getDuration());
 
@@ -43,6 +48,7 @@ public class RunAlgorithmService {
 
             return true;
         } catch (Exception e) {
+            logger.log(Level.WARNING,("Error : " + e.getLocalizedMessage()));
             return false;
         }
     }

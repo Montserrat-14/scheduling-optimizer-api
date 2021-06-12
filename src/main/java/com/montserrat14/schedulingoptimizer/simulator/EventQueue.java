@@ -1,9 +1,6 @@
 package com.montserrat14.schedulingoptimizer.simulator;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class EventQueue {
 
@@ -48,7 +45,10 @@ public class EventQueue {
         }
 
         Event event = this.priorityQueue.remove();
-        this.pastEventsList.add(event);
+
+        if(event.getType().equals(EventType.END)){
+            this.pastEventsList.add(event);
+        }
 
         return event;
     }
@@ -64,4 +64,5 @@ public class EventQueue {
     public List<Event> getPastEventsList() {
         return pastEventsList;
     }
+
 }
