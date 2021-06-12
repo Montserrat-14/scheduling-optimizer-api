@@ -49,6 +49,7 @@ public class ResultListOutput extends SolutionListOutput {
     }
 
     private void initListStations(){
+        this.listStations = new ArrayList<>();
         for(Station station : this.simulator.getStationList()){
             Stations currentStation =  new Stations(station.getId());
             for (Machine machine : station.getMachineList()){
