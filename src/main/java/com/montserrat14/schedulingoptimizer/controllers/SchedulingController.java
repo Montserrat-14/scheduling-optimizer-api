@@ -37,7 +37,6 @@ public class SchedulingController {
             SchedulingSystem schedulingSystem = OptimizerWrapper.getSchedulingSystemFrom(payload);
 
             return ResponseEntity.status(HttpStatus.OK).body(RunAlgorithmService.run(schedulingSystem).toString());
-            //return new ResponseEntity<>(RunAlgorithmService.run(schedulingSystem), HttpStatus.OK);
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

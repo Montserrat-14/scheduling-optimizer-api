@@ -2,7 +2,7 @@ package com.montserrat14.schedulingoptimizer.result;
 
 public class Operations {
 
-    private String id;
+    private int id;
     private String job;
     private int startTime;
     private int endTime;
@@ -11,18 +11,18 @@ public class Operations {
 
     }
 
-    public Operations(String id, String job, int startTime, int endTime) {
+    public Operations(int id, String job, int startTime, int endTime) {
         this.id = id;
         this.job = job;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

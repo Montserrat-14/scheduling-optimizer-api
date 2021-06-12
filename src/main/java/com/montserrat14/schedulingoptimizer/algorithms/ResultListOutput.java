@@ -4,26 +4,20 @@ import com.montserrat14.schedulingoptimizer.models.SchedulingSystem;
 import com.montserrat14.schedulingoptimizer.models.problem.factory.ISchedulingProblem;
 import com.montserrat14.schedulingoptimizer.result.*;
 import com.montserrat14.schedulingoptimizer.simulator.*;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.permutationsolution.impl.IntegerPermutationSolution;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class ResultListOutput extends SolutionListOutput {
     private ISchedulingProblem problem;
     private List<? extends Solution<?>> solutionList;
     private Simulator simulator;
 
-    private List<Machines> resultMachinesPerSolutionList;
-    private List<Stations> resulStationPerSolution;
+    private List<Stations> listStations;
     private List<JSONObject> results;
 
 
@@ -31,8 +25,7 @@ public class ResultListOutput extends SolutionListOutput {
         super(algorithm.getResult());
         this.solutionList = algorithm.getResult();
         this.problem = problem;
-        this.resultMachinesPerSolutionList = new ArrayList<>();
-        this.resulStationPerSolution = new ArrayList<>();
+        this.listStations = new ArrayList<>();
         this.results = new ArrayList<>();
 
         initSimulator(problemS);
@@ -45,40 +38,47 @@ public class ResultListOutput extends SolutionListOutput {
             this.simulator = new Simulator(schedulingSystem);
             this.simulator.run((IntegerPermutationSolution) intPermutationSolution);
 
-            Objectives resultObjective = new Objectives("markspan", this.simulator.getObjective());
+            Objectives resultObjective = new Objectives("makespan", this.simulator.getObjective());
+            List<Objectives> listObjectives = new ArrayList<>();
+            listObjectives.add(resultObjective);
 
-            //results.add(new JSONArray().put(new JSONObject(new Solutions(resultObjective,getResultMachinesPerSolutionList()))));
-            results.add(new JSONObject(new Solutions(resultObjective, getResultMachinesPerSolutionList())));
+            results.add(new JSONObject(new Solutions(listObjectives, getResultMachinesPerSolutionList())));
         }
 
         System.out.println();
     }
 
+    private void initListStations(){
+        for(Station station : this.simulator.getStationList()){
+            Stations currentStation =  new Stations(station.getId());
+            for (Machine machine : station.getMachineList()){
+                Machines resultMachine = new Machines(station.getName());
+                currentStation.addMachine(resultMachine);
+            }
+            this.listStations.add(currentStation);
+        }
+    }
+
     private List<Stations> getResultMachinesPerSolutionList() {
 
-        for (List<Event> events : this.simulator.getEventQueue().getPastEventsByMachine().values()) {
+        initListStations();
 
-            for (Event pastEvent : events) {
+        for (Event pastEvent : this.simulator.getEventQueue().getPastEventsList()) {
 
-                Machines resultMachine = new Machines();
                 Operations resultOperation = new Operations();
 
-                resultMachine.setName(pastEvent.getResourceName());
-
-                resultOperation.setId(String.valueOf(pastEvent.getSimulatorJob().getCurrentMachineIndex()));
+                resultOperation.setId(pastEvent.getTask().getId());
                 resultOperation.setJob(pastEvent.getSimulatorJob().getName());
                 resultOperation.setEndTime(pastEvent.getTime());
                 resultOperation.setStartTime(pastEvent.getStartTime());
 
-                resultMachine.getOperations().add(resultOperation);
+                Stations stationToAdd = this.listStations.get(pastEvent.getTask().getStationID());
+                Machines machineToAdd = stationToAdd.getMachines().get(pastEvent.getTask().getMachineID());
+                machineToAdd.addOperation(resultOperation);
 
-                resultMachinesPerSolutionList.add(resultMachine);
-
-                resulStationPerSolution.add(new Stations(resultMachinesPerSolutionList));
-            }
         }
 
-        return resulStationPerSolution;
+        return this.listStations;
     }
 
     public List<JSONObject> getResults() {

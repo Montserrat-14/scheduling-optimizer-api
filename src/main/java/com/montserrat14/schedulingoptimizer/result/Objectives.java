@@ -2,8 +2,8 @@ package com.montserrat14.schedulingoptimizer.result;
 
 public class Objectives {
 
-    public String name;
-    public int value;
+    private String name;
+    private int value;
 
     public Objectives() {
     }

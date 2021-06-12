@@ -26,7 +26,7 @@ public class Station {
         this.tasksToRunList = tasksToRunList;
 
         for (int i = 0; i < totalMachine ; i++) {
-            this.machineList.add(new Machine(this));
+            this.machineList.add(new Machine(this,i));
         }
 
         this.simulatorJobQueue = new SimulatorJobQueue(totalJobs);

@@ -95,16 +95,14 @@ public class Simulator {
 
     public void launchStartEvent(int time, SimulatorJob simulatorJob, Task task){
 
-        String resourceName = problemInfo.getResource().getResources().get(simulatorJob.getCurrentMachineIndex()).getName();
-        eventQueue.addEvent(new Event(simulatorJob, task, EventType.START, time,resourceName));
+        eventQueue.addEvent(new Event(simulatorJob, task, EventType.START, time));
 
     }
 
     public void launchEndEvent(int time, SimulatorJob simulatorJob, Task task){
 
         time += task.getDuration();
-        String resourceName = problemInfo.getResource().getResources().get(simulatorJob.getCurrentTaskIndex()).getName();
-        eventQueue.addEvent(new Event(simulatorJob, task, EventType.END, time, resourceName));
+        eventQueue.addEvent(new Event(simulatorJob, task, EventType.END, time));
 
     }
 

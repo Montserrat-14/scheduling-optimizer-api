@@ -27,7 +27,7 @@ public class SimulatorJob {
         this.currentTaskIndex = 0;
 
         int countID = operationID;
-        for( Operation operation : operationList){
+        for(Operation operation : operationList){
                 this.taskList.add(new Task(this,
                         operation.getIndex(),
                         operation.getResourceId(),

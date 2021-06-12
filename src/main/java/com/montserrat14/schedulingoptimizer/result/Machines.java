@@ -5,22 +5,22 @@ import java.util.List;
 
 public class Machines {
 
-    public String name;
-    public List<Operations> Operations;
+    private String name;
+    private List<Operations> listOperations;
 
     public Machines() {
         this.name = "";
-        this.Operations = new ArrayList<>();
+        this.listOperations = new ArrayList<>();
     }
 
     public Machines(String name) {
         this.name = name;
-        this.Operations = new ArrayList<>();
+        this.listOperations = new ArrayList<>();
     }
 
-    public Machines(String name, List<Operations> Operations) {
+    public Machines(String name, List<Operations> listOperations) {
         this.name = name;
-        this.Operations = Operations;
+        this.listOperations = listOperations;
     }
 
     public String getName() {
@@ -32,10 +32,15 @@ public class Machines {
     }
 
     public List<Operations> getOperations() {
-        return Operations;
+        return listOperations;
     }
 
-    public void setOperations(List<Operations> operations) {
-        Operations = operations;
+    public void setOperations(List<Operations> listOperations) {
+        listOperations = listOperations;
+    }
+
+    public void addOperation(Operations operation){
+        this.listOperations.add(operation);
+
     }
 }

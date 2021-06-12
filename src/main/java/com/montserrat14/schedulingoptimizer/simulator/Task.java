@@ -4,6 +4,7 @@ public class Task {
 
     private SimulatorJob parentJob;
     private int stationID;
+    private int machineID;
     private int duration;
     private int precedenceIndex;
     private int id;
@@ -43,5 +44,13 @@ public class Task {
 
     public void setAlgorithmPriority(int algorithmPriority) {
         this.algorithmPriority = algorithmPriority;
+    }
+
+    public int getMachineID() {
+        return machineID;
+    }
+
+    public void setMachineID(int machineID) {
+        this.machineID = machineID;
     }
 }
