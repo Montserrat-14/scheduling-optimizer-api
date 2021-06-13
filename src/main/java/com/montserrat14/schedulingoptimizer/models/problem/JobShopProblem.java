@@ -14,6 +14,7 @@ public class JobShopProblem extends AbstractIntegerPermutationProblem implements
     private int length;
     public OverallConstraintViolation<PermutationSolution<Integer>> overallConstraintViolationDegree;
     public NumberOfViolatedConstraints<PermutationSolution<Integer>> numberOfViolatedConstraints;
+    private Simulator simulator;
 
     @Override
     public void createProblem(SchedulingSystem problemRequest) {
@@ -31,13 +32,11 @@ public class JobShopProblem extends AbstractIntegerPermutationProblem implements
     }
 
     @Override
-    public void evaluate(PermutationSolution<Integer>solution ) {
-        Simulator sim = new Simulator(this.problemRequest);
-        sim.run(solution);
-
-        solution.setObjective(0,sim.getObjective());
+    public void evaluate(PermutationSolution<Integer> solution) {
+        this.simulator = new Simulator(this.problemRequest);
+        simulator.run(solution);
+        solution.setObjective(0,this.simulator.getObjective());
         evaluateConstraints(solution, sim);
-    }
 
     private void evaluateConstraints(PermutationSolution<Integer> solution, Simulator simulator) {
         int violated = simulator.getNumberOfViolatedConstraints();
@@ -47,6 +46,11 @@ public class JobShopProblem extends AbstractIntegerPermutationProblem implements
 
     public SchedulingSystem getProblem() {
         return this.problemRequest;
+    }
+
+    @Override
+    public Simulator getSimulator() {
+        return this.simulator;
     }
 
     @Override

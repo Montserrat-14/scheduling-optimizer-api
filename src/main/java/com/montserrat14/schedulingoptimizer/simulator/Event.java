@@ -45,4 +45,8 @@ public class Event {
     public void setTime(int time) {
         this.time = time;
     }
+
+    public int getStartTime(){
+        return this.time - task.getDuration();
+    }
 }

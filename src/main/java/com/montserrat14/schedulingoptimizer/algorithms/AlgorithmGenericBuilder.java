@@ -2,8 +2,10 @@ package com.montserrat14.schedulingoptimizer.algorithms;
 
 import com.montserrat14.schedulingoptimizer.exception.AlgorithmsException;
 import com.montserrat14.schedulingoptimizer.exception.SchedulingOptimizerException;
+import com.montserrat14.schedulingoptimizer.models.SchedulingSystem;
 import com.montserrat14.schedulingoptimizer.models.problem.factory.ISchedulingProblem;
 import com.montserrat14.schedulingoptimizer.utils.TimeUtils;
+import org.json.JSONObject;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.AlgorithmBuilder;
 import org.uma.jmetal.operator.crossover.CrossoverOperator;
@@ -29,8 +31,9 @@ public class AlgorithmGenericBuilder {
     private ISchedulingProblem problem;
     private Object algorithmInstance;
     private Algorithm algorithm;
-    private HashMap<String, Object> results;
+    private JSONObject results;
     private Method setMaxEvaluations;
+    private SchedulingSystem schedulingSystem;
 
     private Double evaluationTimeExecution;
 
@@ -145,17 +148,24 @@ public class AlgorithmGenericBuilder {
     }
 
     public AlgorithmGenericBuilder getResults() throws Exception {
-        ResultListOutput resultsOutput = new ResultListOutput(this.algorithm, problem);
-        results = resultsOutput.getResultsPayload();
-        //resultsOutput.print();
+
+        results = new JSONObject();
+
+        ResultListOutput resultsOutput = new ResultListOutput(this.algorithm, problem,this.schedulingSystem);
+        results.put("solutions",resultsOutput.getResults());
+
         return this;
     }
 
-    public HashMap<String, Object> getResponse() {
+    public JSONObject getResponse() {
         return results;
     }
 
     public Double getLastTimeExecution() {
         return evaluationTimeExecution;
+    }
+
+    public void setSchedulingSystem(SchedulingSystem schedulingSystem) {
+        this.schedulingSystem = schedulingSystem;
     }
 }

@@ -1,5 +1,6 @@
 package com.montserrat14.schedulingoptimizer.simulator;
 
+import com.montserrat14.schedulingoptimizer.models.order.Job;
 import com.montserrat14.schedulingoptimizer.models.order.Operation;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +14,20 @@ public class SimulatorJob {
     private int currentTaskIndex;
     private int currentMachineIndex;
     private String name;
+    private String parentName;
 
-    public SimulatorJob(int operationID, List<Operation> operationList, String jobName) {
-        init(operationList, operationID, jobName);
+    public SimulatorJob(int operationID, List<Operation> operationList, Job job) {
+        init(operationList, operationID, job);
     }
 
-    private void init(List<Operation> operationList, int operationID, String jobName){
-        this.name = jobName;
+    private void init(List<Operation> operationList, int operationID,Job job){
+        this.name = job.getName();
+        this.parentName = parentName;
         this.taskList = new ArrayList<>();
         this.currentTaskIndex = 0;
 
         int countID = operationID;
-        for( Operation operation : operationList){
+        for(Operation operation : operationList){
                 this.taskList.add(new Task(this,
                         operation.getIndex(),
                         operation.getResourceId(),
@@ -94,5 +97,9 @@ public class SimulatorJob {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getParentName() {
+        return parentName;
     }
 }

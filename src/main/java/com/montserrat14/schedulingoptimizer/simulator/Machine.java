@@ -5,9 +5,12 @@ public class Machine {
 
     private SimulatorJob actualJob = null;
     private Station parentStation;
+    private int id;
 
-    public Machine(Station parentStation) {
+    public Machine(Station parentStation, int id) {
+
         this.parentStation = parentStation;
+        this.id = id;
     }
 
     public void addJob(SimulatorJob newJob){
@@ -22,4 +25,11 @@ public class Machine {
         return actualJob == null;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

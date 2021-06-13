@@ -2,7 +2,7 @@ package com.montserrat14.schedulingoptimizer.simulator;
 
 public class SimulatorEventHandler {
 
-    private Simulator simulator;
+    private final Simulator simulator;
 
     public SimulatorEventHandler(Simulator simulator) {
         this.simulator = simulator;

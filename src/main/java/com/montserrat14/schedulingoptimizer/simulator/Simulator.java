@@ -34,7 +34,7 @@ public class Simulator {
         this.sortedSolutionList = new ArrayList<>();
         System.out.println("\n\n\n############################################################################## NEW SOLUTION");
         for (int i = 0; i < solution.getNumberOfVariables(); i++) {
-            System.out.print("Index: " + i + " Task: " + solution.getVariable(i));
+            System.out.print("Index: " + i + " Task: " + solution.getVariable(i) + "\n");
             this.sortedSolutionList.add(solution.getVariable(i));
             this.allTasks.get(this.sortedSolutionList.get(i)).setAlgorithmPriority(i);
         }
@@ -53,7 +53,7 @@ public class Simulator {
         //init simulator Stations
         for (Resources station : this.problemInfo.getResource().getResources()) {
             List<Integer> precedenceList = this.allTaskByMachine.get(station.getId());
-            this.stationList.add(new Station(station.getId(),station.getQuantity(),this.problemInfo.getOrder().getJobs().size(), precedenceList));
+            this.stationList.add(new Station(station.getId(),station.getName(),station.getQuantity(),this.problemInfo.getOrder().getJobs().size(), precedenceList));
         }
 
         SimulatorEventHandler simulatorEventHandler =  new SimulatorEventHandler(this);
@@ -72,15 +72,18 @@ public class Simulator {
             System.out.println("Event time: " + ev.getTime() + "\n" +
                                "Event Type: " + ev.getType() + "\n" +
                                "Job name: " + ev.getSimulatorJob().getName() + "\n" +
-                               "Task: " + ev.getTask().getId());
+                               "Task: " + ev.getTask().getId() + "\n" +
+                               "Start Time - for End Event: " + ev.getStartTime());
             System.out.println("\n");
             System.out.println("############################################################");
             System.out.println("\n");
             simulatorEventHandler.catchEvent(ev);
         }
 
+
         if(this.objective != maxCompletionTime) this.objective = getMakespan();
         System.out.println("Makespan: " + this.objective);
+
 
     }
 
@@ -119,7 +122,7 @@ public class Simulator {
         int operationCount = 0;
 
         for(Job job : this.problemInfo.getOrder().getJobs()){
-            SimulatorJob simulatorJob = new SimulatorJob(operationCount, job.getOperations(), job.getName());
+            SimulatorJob simulatorJob = new SimulatorJob(operationCount, job.getOperations(), job);
             this.simulatorJobList.add(simulatorJob);
             operationCount += job.getNumberOfOperations();
 
@@ -167,5 +170,14 @@ public class Simulator {
         this.objective = objective;
     }
 
+
     public int getNumberOfViolatedConstraints(){ return numberOfViolatedConstrains; }
+
+    public EventQueue getEventQueue() {
+        return eventQueue;
+    }
+
+    public Map<Integer, List<Integer>> getAllTaskByMachine() {
+        return allTaskByMachine;
+    }
 }
