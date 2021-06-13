@@ -12,17 +12,14 @@ RUN mvn -f /home/app/pom.xml clean package
 # Package stage
 #
 FROM openjdk:11-jre-slim
-ENV MAX_TRIES=3
-ENV RESULTSPATH="resources"
-ENV RESULTSEXTENSION=".csv"
+
 ENV INTEGER_DEFAULT_PARAM="30"
 ENV DOUBLE_DEFAULT_PARAM="30.00"
 ENV FLOAT_DEFAULT_PARAM="30.00"
 ENV MUTATION_RATE="0.8"
-ENV CROSSOVER_RATE="1.0"
-COPY --from=build /home/app/ADS.owl ADS.owl
-COPY --from=build /home/app/target/systemoptimizer-0.0.1-SNAPSHOT.jar /usr/local/lib/demo.jar
-RUN mkdir -p $RESULTSPATH
+ENV CROSSOVER_RATE="0.9"
+
+COPY --from=build /home/app/target/schedulingoptimizer-0.0.1-SNAPSHOT.jar /usr/local/lib/demo.jar
 
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/usr/local/lib/demo.jar"]

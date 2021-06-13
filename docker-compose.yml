@@ -3,19 +3,19 @@ version: '3'
 services:
   angular:
     container_name: angular
-    image: diogomfernandes/system-optimizer-ui
+    image: diogomfernandes/scheduling-optimizer-ui
     ports:
       - 3000:80
     networks:
-      - system-optimizer
+      - scheduling-optimizer
   backend:
     container_name: backend
-    image: henriquepcabral/system-optimizer-api
+    image: henriquepcabral/scheduling-optimizer-api
     ports:
       - 3080:8080
     networks:
-      - system-optimizer
+      - scheduling-optimizer
 
 networks:
-  system-optimizer:
+  scheduling-optimizer:
     driver: bridge

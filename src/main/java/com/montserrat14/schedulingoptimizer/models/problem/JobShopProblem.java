@@ -25,7 +25,7 @@ public class JobShopProblem extends AbstractIntegerPermutationProblem implements
 
         this.length = problemRequest.getOrder().getTotalNumberOfOperations();
         setNumberOfVariables(this.length);
-        setNumberOfObjectives(1); //FIXME: In the end we can add more objectives beyond makespan
+        setNumberOfObjectives(problemRequest.getOrder().objectives.getNumOfObjectives());
         overallConstraintViolationDegree = new OverallConstraintViolation<>();
         numberOfViolatedConstraints = new NumberOfViolatedConstraints<>();
 
@@ -34,9 +34,10 @@ public class JobShopProblem extends AbstractIntegerPermutationProblem implements
     @Override
     public void evaluate(PermutationSolution<Integer> solution) {
         this.simulator = new Simulator(this.problemRequest);
-        simulator.run(solution);
-        solution.setObjective(0,this.simulator.getObjective());
-        evaluateConstraints(solution, sim);
+        this.simulator.run(solution);
+        solution.setObjective(0, this.simulator.getObjective());
+        evaluateConstraints(solution, this.simulator);
+    }
 
     private void evaluateConstraints(PermutationSolution<Integer> solution, Simulator simulator) {
         int violated = simulator.getNumberOfViolatedConstraints();

@@ -5,6 +5,7 @@ import org.reflections.Reflections;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.AlgorithmBuilder;
 import org.uma.jmetal.operator.crossover.CrossoverOperator;
+import org.uma.jmetal.operator.crossover.impl.PMXCrossover;
 import org.uma.jmetal.operator.crossover.impl.TwoPointCrossover;
 import org.uma.jmetal.operator.mutation.MutationOperator;
 import org.uma.jmetal.operator.mutation.impl.PermutationSwapMutation;
@@ -60,7 +61,7 @@ public class AlgorithmUtils {
         defaultParamsMap.put(double.class, Double.parseDouble(System.getenv("DOUBLE_DEFAULT_PARAM")));
         defaultParamsMap.put(Float.class, Float.parseFloat(System.getenv("FLOAT_DEFAULT_PARAM")));
         defaultParamsMap.put(float.class, Float.parseFloat(System.getenv("FLOAT_DEFAULT_PARAM")));
-        defaultParamsMap.put(CrossoverOperator.class, new TwoPointCrossover(Double.parseDouble(System.getenv("CROSSOVER_RATE"))));
+        defaultParamsMap.put(CrossoverOperator.class, new PMXCrossover(Double.parseDouble(System.getenv("CROSSOVER_RATE"))));
         defaultParamsMap.put(MutationOperator.class, new PermutationSwapMutation(Double.parseDouble(System.getenv("MUTATION_RATE"))));
         defaultParamsMap.put(SelectionOperator.class, new BinaryTournamentSelection<BinarySolution>());
         defaultParamsMap.put(SolutionListEvaluator.class, new SequentialSolutionListEvaluator<Solution<?>>());

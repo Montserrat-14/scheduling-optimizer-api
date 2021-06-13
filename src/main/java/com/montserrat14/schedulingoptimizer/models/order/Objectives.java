@@ -27,4 +27,18 @@ public class Objectives {
     public void setCost(boolean cost) {
         this.cost = cost;
     }
+
+    public int getNumOfObjectives(){
+        int numOfObjectives = 0;
+
+        if(totalTime){
+            numOfObjectives++;
+        }
+
+        if(cost){
+            numOfObjectives++;
+        }
+
+        return numOfObjectives;
+    }
 }
