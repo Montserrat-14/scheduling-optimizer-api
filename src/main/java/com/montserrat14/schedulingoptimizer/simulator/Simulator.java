@@ -3,9 +3,7 @@ package com.montserrat14.schedulingoptimizer.simulator;
 import com.montserrat14.schedulingoptimizer.models.SchedulingSystem;
 import com.montserrat14.schedulingoptimizer.models.order.Job;
 import com.montserrat14.schedulingoptimizer.models.resource.Resources;
-import org.uma.jmetal.solution.integersolution.IntegerSolution;
 import org.uma.jmetal.solution.permutationsolution.PermutationSolution;
-import org.uma.jmetal.solution.permutationsolution.impl.IntegerPermutationSolution;
 
 import java.util.*;
 
@@ -21,7 +19,10 @@ public class Simulator {
     private SchedulingSystem problemInfo;
     private EventQueue eventQueue;
 
+    private int maxCompletionTime = 0;
+
     private int objective;
+    private int numberOfViolatedConstrains;
 
     public Simulator(SchedulingSystem problemInfo) {
         this.problemInfo = problemInfo;
@@ -41,13 +42,14 @@ public class Simulator {
 
         // add tasks by Machine
         for (Task task : this.allTasks.values()) {
+            maxCompletionTime += task.getDuration();
             if(this.allTaskByMachine.containsKey(task.getStationID())){
                 this.allTaskByMachine.get(task.getStationID()).add(task.getAlgorithmPriority());
             }else{
                 this.allTaskByMachine.put(task.getStationID(),new ArrayList<>(Arrays.asList(task.getAlgorithmPriority())));
             }
         }
-
+        maxCompletionTime *= 3;
         //init simulator Stations
         for (Resources station : this.problemInfo.getResource().getResources()) {
             List<Integer> precedenceList = this.allTaskByMachine.get(station.getId());
@@ -63,7 +65,8 @@ public class Simulator {
         while (!hasEnded()){
             Event ev = this.eventQueue.getNextEvent();
             if(ev == null){
-                this.objective = 10000;
+                this.numberOfViolatedConstrains += 1;
+                this.objective = maxCompletionTime;
                 break;
             }
             System.out.println("Event time: " + ev.getTime() + "\n" +
@@ -77,10 +80,10 @@ public class Simulator {
             simulatorEventHandler.catchEvent(ev);
         }
 
-        if(this.objective != 10000){
-            this.objective = getMakespan();
-            System.out.println("Makespan: " + this.objective);
-        }
+
+        if(this.objective != maxCompletionTime) this.objective = getMakespan();
+        System.out.println("Makespan: " + this.objective);
+
 
     }
 
@@ -166,6 +169,9 @@ public class Simulator {
     public void setObjective(int objective) {
         this.objective = objective;
     }
+
+
+    public int getNumberOfViolatedConstraints(){ return numberOfViolatedConstrains; }
 
     public EventQueue getEventQueue() {
         return eventQueue;
